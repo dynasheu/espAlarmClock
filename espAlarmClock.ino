@@ -101,15 +101,16 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   auto deserializeError = deserializeJson(json, incommingMessage);
   if ( ! deserializeError ) {
     // not implemented (copied from my other script)
-    // char new_delay[10];
+    char new_volume[4];
+    sprintf(new_volume, "%d", json["radio_volume"].as<unsigned int>()); // int to string conversion
     // sprintf(new_delay, "%d", json["sensor_delay"].as<unsigned int>()); // int to string conversion
     // sprintf(new_delay, "%d", json["sensor_delay"].as<unsigned int>()); // int to string conversion
-    // sprintf(new_delay, "%d", json["sensor_delay"].as<unsigned int>()); // int to string conversion
-    // Serial.println(new_delay);
-    // if ( strlen(new_delay) > 2 ) { // strlen handles if property even exists
-    //   strcpy(sensor_delay, new_delay);
-    //   saveConfig();
-    // }
+    Serial.println(new_volume);
+    if ( new_volume != "0" ) { // strlen handles if property even exists
+      strcpy(radio_volume, new_volume);
+      audio.setVolume(atoi(radio_volume));
+      saveConfig();
+    }
   } else {
     Serial.println("failed to load json config");
   }
