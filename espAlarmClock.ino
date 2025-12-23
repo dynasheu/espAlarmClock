@@ -307,46 +307,54 @@ void loop() {
   // tun on or off radio with a button
   if ( playButton.released()) {
     if ( radioPlaying == 0 ) {
-      Serial.println("Turning ON radio.");
+      Serial.println("Turning radio ON.");
       audio.connecttohost(radio_station);
       radioTurnedOn = millis();
       radioPlaying = 1;
     } else if ( radioPlaying == 1 ) {
-      Serial.println("Turning OFF radio.");
+      Serial.println("Turning radio OFF.");
       audio.stopSong();
       radioPlaying = 0;
     }
   }
 
-  // tunr off radio after timer runs out
+  
   if ( radioPlaying == 1) {
+    // turn off radio after timer runs out
     if (millis() - radioTurnedOn > atoi(radio_play_time)*60*1000) {
-      Serial.println("Turning OFF radio since time ran out.");
+      Serial.println("Turning radio OFF since time ran out.");
       audio.stopSong();
       radioPlaying = 0;
     }
+
+    // volume can be changed only when radio is turned on
+    int volumeChange = 0;
+    int volume = atoi(radio_volume);
+    if ( volUpButton.released() && !playButton.on() ) {
+      volume++;
+      volumeChange = 1;
+      if ( volume == 22 ) {
+        volume = 21;
+        volumeChange = 0;
+      }
+    } else if ( volDownButton.released() && !playButton.on()  ) {
+      volume--;
+      volumeChange = 1;
+      if ( volume == 0 ) {
+        volume = 1;
+        volumeChange = 0;
+      }
+    }
+
+    if ( volumeChange == 1 ) {
+      sprintf(radio_volume, "%d", volume);
+      Serial.print("Setting new volume to ");
+      Serial.println(volume);
+      audio.setVolume(volume);
+    }
   }
 
-  // volume check
-  if ( volUpButton.released() && !playButton.on() ) {
-    int volume = atoi(radio_volume) + 1;
-    if ( volume == 22 ) {
-      volume = 21;
-    }
-    sprintf(radio_volume, "%d", volume);
-    Serial.print("Setting new volume to ");
-    Serial.println(volume);
-    audio.setVolume(volume);
-  } else if ( volDownButton.released() && !playButton.on()  ) {
-    int volume = atoi(radio_volume) - 1;
-    if ( volume == 0 ) {
-      volume = 1;
-    }
-    sprintf(radio_volume, "%d", volume);
-    Serial.print("Setting new volume to ");
-    Serial.println(volume);
-    audio.setVolume(volume);
-  }
+
   
   vTaskDelay(1);
 }
