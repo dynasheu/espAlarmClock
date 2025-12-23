@@ -6,10 +6,9 @@
 #include <ArduinoJson.h> // v6+
 #include <Audio.h> // https://github.com/schreibfaul1/ESP32-audioI2S
 #include <time.h>
+#include <avdweb_Switch.h> // https://github.com/avdwebLibraries/avdweb_Switch
 
 #define FORMAT_SPIFFS_IF_FAILED true
-#define FILTER_LENGTH 50
-#define LOOP_DELAY 10
 
 //define your default values here, if there are different values in config.json, they are overwritten.
 char mqtt_server[40];
@@ -19,6 +18,7 @@ char mqtt_password[15];
 char mqtt_topic[30] = "bedroom/alarm_clock";
 char radio_station[100] = "";
 char radio_volume[4] = "8";
+char radio_play_time[15] = "5"; // in minutes
 char clock_gmt_offset[10] = "3600";
 char clock_daylight_offset[10] ="3600";
 
@@ -26,14 +26,21 @@ char clock_daylight_offset[10] ="3600";
 bool shouldSaveConfig = false;
 
 //sensor variables
-const int clockPinClk = 4;
-const int clockPinData = 5;
+const int clockPinClk = 2;
+const int clockPinData = 4;
 const int audioPinBClk = 36;
 const int audioPinData = 44;
 const int audioPinLRClk = 35;
-const int volumeUpPin = 8;
-const int volumeDownPin = 7;
+const int volumeUpPin = 13;
+const int volumeDownPin = 12;
 const int playPin = 18;
+
+int radioPlaying = 0;
+unsigned long radioTurnedOn = 0;
+
+Switch playButton = Switch(playPin);
+Switch volUpButton = Switch(volumeUpPin);
+Switch volDownButton = Switch(volumeDownPin);
 
 //callback notifying us of the need to save config
 void saveConfigCallback () {
@@ -286,18 +293,60 @@ void setup() {
   // audio
   audio.setPinout(audioPinBClk, audioPinLRClk, audioPinData);
   audio.setVolume(atoi(radio_volume));
-  audio.connecttohost(radio_station);
 }
 
 void loop() {
   //mqtt client check
   if (!client.connected()) reconnect();
   client.loop();
-
-
   audio.loop();
+  playButton.poll();
+  volUpButton.poll();
+  volDownButton.poll();
 
+  // tun on or off radio with a button
+  if ( playButton.released()) {
+    if ( radioPlaying == 0 ) {
+      Serial.println("Turning ON radio.");
+      audio.connecttohost(radio_station);
+      radioTurnedOn = millis();
+      radioPlaying = 1;
+    } else if ( radioPlaying == 1 ) {
+      Serial.println("Turning OFF radio.");
+      audio.stopSong();
+      radioPlaying = 0;
+    }
+  }
 
-  // delay(LOOP_DELAY);
+  // tunr off radio after timer runs out
+  if ( radioPlaying == 1) {
+    if (millis() - radioTurnedOn > atoi(radio_play_time)*60*1000) {
+      Serial.println("Turning OFF radio since time ran out.");
+      audio.stopSong();
+      radioPlaying = 0;
+    }
+  }
+
+  // volume check
+  if ( volUpButton.released() && !playButton.on() ) {
+    int volume = atoi(radio_volume) + 1;
+    if ( volume == 22 ) {
+      volume = 21;
+    }
+    sprintf(radio_volume, "%d", volume);
+    Serial.print("Setting new volume to ");
+    Serial.println(volume);
+    audio.setVolume(volume);
+  } else if ( volDownButton.released() && !playButton.on()  ) {
+    int volume = atoi(radio_volume) - 1;
+    if ( volume == 0 ) {
+      volume = 1;
+    }
+    sprintf(radio_volume, "%d", volume);
+    Serial.print("Setting new volume to ");
+    Serial.println(volume);
+    audio.setVolume(volume);
+  }
+  
   vTaskDelay(1);
 }
