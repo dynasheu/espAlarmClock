@@ -18,9 +18,13 @@ char mqtt_password[15];
 char mqtt_topic[30] = "bedroom/alarm_clock";
 char radio_station[100] = "";
 char radio_volume[4] = "8";
-char radio_play_time[15] = "5"; // in minutes
-char clock_gmt_offset[10] = "3600";
-char clock_daylight_offset[10] ="3600";
+char radio_play_time[6] = "30"; // in minutes
+char clock_gmt_offset[3] = "1"; // in hours
+char clock_daylight_offset[3] ="1"; // in hours
+
+
+const char* ntpServer = "pool.ntp.org";
+const int ntpInterval = 3600;
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -133,6 +137,7 @@ void saveConfig() {
   json["mqtt_topic"] = mqtt_topic;
   json["radio_station"] = radio_station;
   json["radio_volume"] = radio_volume;
+  json["radio_play_time"] = radio_play_time;
   json["clock_gmt_offset"] = clock_gmt_offset;
   json["clock_daylight_offset"] = clock_daylight_offset;
 
@@ -218,8 +223,9 @@ void setup() {
   WiFiManagerParameter custom_mqtt_topic("topic", "mqtt topic", mqtt_topic, 30);
   WiFiManagerParameter custom_radio_station("radio_station", "radio station", radio_station, 100);
   WiFiManagerParameter custom_radio_volume("radio_volume", "radio volume", radio_volume, 4);
-  WiFiManagerParameter custom_clock_gmt_offset("gmt_offset", "clock timezone offset in seconds", clock_gmt_offset, 10);
-  WiFiManagerParameter custom_clock_daylight_offset("daylight_offset", "daylight offset", clock_daylight_offset, 10);
+  WiFiManagerParameter custom_radio_play_time("radio_play_time", "radio play time [min]", radio_play_time, 6);
+  WiFiManagerParameter custom_clock_gmt_offset("gmt_offset", "clock timezone offset [h]", clock_gmt_offset, 3);
+  WiFiManagerParameter custom_clock_daylight_offset("daylight_offset", "daylight offset [h]", clock_daylight_offset, 3);
 
   //WiFiManager
   WiFiManager wifiManager;
@@ -235,6 +241,7 @@ void setup() {
   wifiManager.addParameter(&custom_mqtt_topic);
   wifiManager.addParameter(&custom_radio_station);
   wifiManager.addParameter(&custom_radio_volume);
+  wifiManager.addParameter(&custom_radio_play_time);
   wifiManager.addParameter(&custom_clock_gmt_offset);
   wifiManager.addParameter(&custom_clock_daylight_offset);
 
@@ -267,6 +274,7 @@ void setup() {
   strcpy(mqtt_topic, custom_mqtt_topic.getValue());
   strcpy(radio_station, custom_radio_station.getValue());
   strcpy(radio_volume, custom_radio_volume.getValue());
+  strcpy(radio_play_time, custom_radio_play_time.getValue());
   strcpy(clock_gmt_offset, custom_clock_gmt_offset.getValue());
   strcpy(clock_daylight_offset, custom_clock_daylight_offset.getValue());
   Serial.println("The values in the file are: ");
@@ -277,6 +285,7 @@ void setup() {
   Serial.println("\tmqtt_topic : " + String(mqtt_topic));
   Serial.println("\tradio_station : " + String(radio_station));
   Serial.println("\tradio_volume : " + String(radio_volume));
+  Serial.println("\tradio_play_time : " + String(radio_play_time));
   Serial.println("\tclock_gmt_offset : " + String(clock_gmt_offset));
   Serial.println("\tclock_daylight_offset : " + String(clock_daylight_offset));
 
@@ -289,6 +298,10 @@ void setup() {
   int mqttPort = atoi(mqtt_port);
   client.setServer(mqtt_server, mqttPort);
   client.setCallback(mqttCallback);
+
+  // ntp setup
+  configTime(60*60*atoi(clock_gmt_offset), 60*60*atoi(clock_daylight_offset), ntpServer);
+  setSyncInterval(ntpInterval);
 
   // audio
   audio.setPinout(audioPinBClk, audioPinLRClk, audioPinData);
@@ -318,7 +331,6 @@ void loop() {
     }
   }
 
-  
   if ( radioPlaying == 1) {
     // turn off radio after timer runs out
     if (millis() - radioTurnedOn > atoi(radio_play_time)*60*1000) {
@@ -354,7 +366,5 @@ void loop() {
     }
   }
 
-
-  
   vTaskDelay(1);
 }
