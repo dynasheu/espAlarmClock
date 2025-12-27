@@ -6,7 +6,9 @@
 #include <ArduinoJson.h> // v6+
 #include <Audio.h> // https://github.com/schreibfaul1/ESP32-audioI2S
 #include <time.h>
+#include <esp_sntp.h>
 #include <avdweb_Switch.h> // https://github.com/avdwebLibraries/avdweb_Switch
+#include <TM1637Display.h> // https://github.com/avishorp/TM1637
 
 #define FORMAT_SPIFFS_IF_FAILED true
 
@@ -25,6 +27,8 @@ char clock_daylight_offset[3] ="1"; // in hours
 
 const char* ntpServer = "pool.ntp.org";
 const int ntpInterval = 3600;
+unsigned long lastClockRefresh = 0;
+long clockRefreshTime = 1000;
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -54,6 +58,9 @@ void saveConfigCallback () {
 
 // audio
 Audio audio;
+
+// display
+TM1637Display display(clockPinClk, clockPinData);
 
 //mqtt client
 WiFiClient espClient;
@@ -151,6 +158,24 @@ void saveConfig() {
   }
 }
 
+void displayTime() {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+    return;
+  }
+
+  // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+
+  int hours = timeinfo.tm_hour;
+  int minutes = timeinfo.tm_min;
+  int clock = hours*100 + minutes;
+  Serial.println(clock);
+  // display.clear();
+  // display.showNumberDec(clock);
+  // display.showNumberDecEx(clock, 0b11100000);
+}
+
 void setup() {
   // initialize serial
   Serial.begin(115200);
@@ -200,6 +225,7 @@ void setup() {
           strcpy(mqtt_topic, json["mqtt_topic"]);
           strcpy(radio_station, json["radio_station"]);
           strcpy(radio_volume, json["radio_volume"]);
+          strcpy(radio_play_time, json["radio_play_time"]);
           strcpy(clock_gmt_offset, json["clock_gmt_offset"]);
           strcpy(clock_daylight_offset, json["clock_daylight_offset"]);
         } else {
@@ -301,7 +327,10 @@ void setup() {
 
   // ntp setup
   configTime(60*60*atoi(clock_gmt_offset), 60*60*atoi(clock_daylight_offset), ntpServer);
-  setSyncInterval(ntpInterval);
+  // setSyncInterval(ntpInterval);
+
+  // display setup
+  // display.setBrightness(3);
 
   // audio
   audio.setPinout(audioPinBClk, audioPinLRClk, audioPinData);
@@ -364,6 +393,11 @@ void loop() {
       Serial.println(volume);
       audio.setVolume(volume);
     }
+  }
+
+  if ( millis() - lastClockRefresh > clockRefreshTime ) {
+    displayTime();
+    lastClockRefresh = millis();
   }
 
   vTaskDelay(1);
