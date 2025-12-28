@@ -29,6 +29,8 @@ const char* ntpServer = "pool.ntp.org";
 const int ntpInterval = 3600;
 unsigned long lastClockRefresh = 0;
 long clockRefreshTime = 1000;
+int oldHour = 0;
+int oldMinute = 0;
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -165,15 +167,19 @@ void displayTime() {
     return;
   }
 
-  // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  int curHour = timeinfo.tm_hour;
+  int curMinute = timeinfo.tm_min;
+  int clock = curHour*100 + curMinute;
 
-  int hours = timeinfo.tm_hour;
-  int minutes = timeinfo.tm_min;
-  int clock = hours*100 + minutes;
-  Serial.println(clock);
-  // display.clear();
-  // display.showNumberDec(clock);
-  // display.showNumberDecEx(clock, 0b11100000);
+  if ( oldHour != curHour || oldMinute != curMinute ) {
+    oldHour = curHour;
+    oldMinute = curMinute;
+    Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+    Serial.println(clock);
+    // display.clear();
+    // display.showNumberDec(clock);
+    // display.showNumberDecEx(clock, 0b11100000);
+  }
 }
 
 void setup() {
