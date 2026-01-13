@@ -185,8 +185,8 @@ void displayTime() {
 void setup() {
   // initialize serial
   Serial.begin(115200);
-  while (!Serial)
-    delay(10);
+  // while (!Serial) // this fails board from starting when it is not connected to PC, it could be conented toEnabled option CDC on Boot
+  delay(10);
   Serial.println("Serial online");
 
   // initialize sonsor pins and sensor struct
@@ -281,8 +281,10 @@ void setup() {
   //set dark mode
   wifiManager.setDarkMode(true);
 
-  //reset settings - for testing
-  // wifiManager.resetSettings();
+  //reset settings if play button is held during bootup
+  if ( digitalRead(playPin) == 0 ) {
+    wifiManager.resetSettings();
+  }
 
   //and goes into a blocking loop awaiting configuration
   if (!wifiManager.autoConnect("AutoConnectAP", "password")) {

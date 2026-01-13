@@ -6,6 +6,7 @@ Uses 3 buttons
 - volume up/down
 
 ## To-Do
-- Add option to start radio veor mqtt
+- Add option to start radio over mqtt
 - Add two alarms (set up over mqtt or web)
 - Add saving options to setting received over mqtt or by buttons on the device
+- add web interface. same solution I used on my bedSensor is not good enough for this project.
