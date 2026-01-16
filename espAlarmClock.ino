@@ -8,7 +8,6 @@
 #include <time.h>
 #include <esp_sntp.h>
 #include <avdweb_Switch.h> // https://github.com/avdwebLibraries/avdweb_Switch
-#include <TM1637Display.h> // https://github.com/avishorp/TM1637
 #include <LedController.hpp> // https://github.com/noah1510/LedController
 
 #define FORMAT_SPIFFS_IF_FAILED true
@@ -30,8 +29,7 @@ const char* ntpServer = "pool.ntp.org";
 const int ntpInterval = 3600;
 unsigned long lastClockRefresh = 0;
 long clockRefreshTime = 1000;
-int oldHour = 0;
-int oldMinute = 0;
+int oldClock = 0;
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -64,7 +62,6 @@ void saveConfigCallback () {
 Audio audio;
 
 // display
-TM1637Display display(clockPinClk, clockPinData);
 LedController<1,1> lc = LedController<1,1>(clockPinData,clockPinClk,clockPinLoad);
 
 //mqtt client
@@ -163,6 +160,21 @@ void saveConfig() {
   }
 }
 
+void setDisplay(unsigned int currentTime) {
+  // implementation from library example
+  // 4 is for 4 digits on display
+  for ( int i = 0; i < 4; i++ ) {
+    unsigned long divisor = 1;
+    for (int j = 0; j < i; j++) {
+      divisor *= 10;
+    }
+
+    byte num = currentTime/divisor % 10;
+    lc.setDigit(0,i%4,num,false);
+
+  }
+}
+
 void displayTime() {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
@@ -170,18 +182,14 @@ void displayTime() {
     return;
   }
 
-  int curHour = timeinfo.tm_hour;
-  int curMinute = timeinfo.tm_min;
-  int clock = curHour*100 + curMinute;
+  int curClock = timeinfo.tm_hour*100 + timeinfo.tm_min;
 
-  if ( oldHour != curHour || oldMinute != curMinute ) {
-    oldHour = curHour;
-    oldMinute = curMinute;
+  if ( oldClock != curClock ) {
+    oldClock = curClock;
     Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-    Serial.println(clock);
-    // display.clear();
-    // display.showNumberDec(clock);
-    // display.showNumberDecEx(clock, 0b11100000);
+    // Serial.println(curClock);
+    lc.clearMatrix();
+    setDisplay(curClock);
   }
 }
 
@@ -341,7 +349,6 @@ void setup() {
   // setSyncInterval(ntpInterval);
 
   // display setup
-  // display.setBrightness(3);
   lc.setIntensity(15);
   lc.clearMatrix();
 
