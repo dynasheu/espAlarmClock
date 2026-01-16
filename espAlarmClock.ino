@@ -162,7 +162,6 @@ void saveConfig() {
 
 void setDisplay(unsigned int currentTime) {
   // implementation from library example
-  // 4 is for 4 digits on display
   for ( int i = 0; i < 4; i++ ) {
     unsigned long divisor = 1;
     for (int j = 0; j < i; j++) {
@@ -170,7 +169,13 @@ void setDisplay(unsigned int currentTime) {
     }
 
     byte num = currentTime/divisor % 10;
-    lc.setDigit(0,i%4,num,false);
+
+    // no leading 0 for hours
+    bool check = ( i != 3 ) || ( i == 3 && currentTime > 999 );
+    if ( check ) {
+      lc.setDigit(0,i%4,num,false);
+    }
+    
 
   }
 }
