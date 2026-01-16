@@ -9,6 +9,7 @@
 #include <esp_sntp.h>
 #include <avdweb_Switch.h> // https://github.com/avdwebLibraries/avdweb_Switch
 #include <TM1637Display.h> // https://github.com/avishorp/TM1637
+#include <LedController.hpp> // https://github.com/noah1510/LedController
 
 #define FORMAT_SPIFFS_IF_FAILED true
 
@@ -38,6 +39,7 @@ bool shouldSaveConfig = false;
 //sensor variables
 const int clockPinClk = 2;
 const int clockPinData = 4;
+const int clockPinLoad = 11;
 const int audioPinBClk = 36;
 const int audioPinData = 44;
 const int audioPinLRClk = 35;
@@ -63,6 +65,7 @@ Audio audio;
 
 // display
 TM1637Display display(clockPinClk, clockPinData);
+LedController<1,1> lc = LedController<1,1>(clockPinData,clockPinClk,clockPinLoad);
 
 //mqtt client
 WiFiClient espClient;
@@ -339,6 +342,8 @@ void setup() {
 
   // display setup
   // display.setBrightness(3);
+  lc.setIntensity(15);
+  lc.clearMatrix();
 
   // audio
   audio.setPinout(audioPinBClk, audioPinLRClk, audioPinData);
@@ -405,6 +410,11 @@ void loop() {
 
   if ( millis() - lastClockRefresh > clockRefreshTime ) {
     displayTime();
+
+    // show heap and ps ram usage for debugging
+    // Serial.printf("Free Heap:   %d\n", ESP.getFreeHeap());
+    // Serial.printf("Free PS Ram: %d\n", ESP.getFreePsram());
+
     lastClockRefresh = millis();
   }
 
