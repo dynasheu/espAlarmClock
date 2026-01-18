@@ -175,8 +175,6 @@ void setDisplay(unsigned int currentTime) {
     if ( check ) {
       lc.setDigit(0,i%4,num,false);
     }
-    
-
   }
 }
 
