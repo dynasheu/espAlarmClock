@@ -6,13 +6,14 @@
                 background-color: #238580;
                 font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
                 padding: 0;
-                margin: 0.5em;
+                margin: 0;
             }
 
             .wrapper {
                 min-width: 300px;
                 max-width: 500px;
                 margin: 0 auto;
+                padding: 0;
             }
 
             h1 {
@@ -20,7 +21,9 @@
                 color: #4321DF;
                 text-align: center;
                 padding: 0.5em;
-                margin-bottom: 0.5em;
+                margin: 0 0 0.5em 0;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
             }
 
             h2 {
@@ -32,8 +35,8 @@
             }
 
             .section-outer {
-                border-radius: 0.5em;
-                border: 0.5em solid #3456AB;
+                border-radius: 5px;
+                border: 5px solid #3456AB;
                 margin-bottom: 1em;
             }
 
@@ -46,8 +49,50 @@
             }
 
             label {
-                font-size: 1.2em;
+                /* font-size: 1.2em; */
                 padding-bottom: 0.25em;
+            }
+
+            .divider {
+                background-color: #3456AB;
+                height: 5px;
+            }
+
+            input[type=text], 
+            input[type=number], 
+            input[type=url], 
+            input[type=password], 
+            input[type=time], 
+            select {
+                width: 100%;
+                padding: 0.5em 0.5em;
+                display: inline-block;
+                border: 1px solid #220070;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+
+            input[type=submit] {
+                width: 100%;
+                background-color: #430d75;
+                color:#EB913E;
+                border: 5px solid #3456AB;
+                border-radius: 5px;
+                cursor: pointer;
+                padding: 0.5em;
+                margin-bottom: 1em;
+                font-size: 1em;
+                font-weight: 700;
+            }
+
+            input[type=submit]:hover {
+                background-color: #3456AB;
+            }
+
+            input[type=submit]:active {
+                background-color: #ED3F42;
+                border: 5px solid #ED3F42;
+                color: #000000;
             }
 
 
@@ -60,8 +105,8 @@
             <div class="section-outer">
                 <h2>Clock settings</h2>
                 <div class="section">
-                    <label>Time zone</label>
-                    <select>
+                    <label for="tz_select">Time zone</label>
+                    <select id="tz_select">
                         <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
                         <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
                         <option value="-10">(GMT -10:00) Hawaii</option>
@@ -104,102 +149,100 @@
                         <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
                     </select>
                     <div>
-                        <input type="checkbox">
-                        <label>Daylight savings time</label>
+                        <label for="dst_toggle">Daylight savings time</label>
+                        <input id="dst_toggle" type="checkbox">
                     </div>
-                    <label>Clock format</label>
-                    <select>
+                    <label for="clk_frm_select">Clock format</label>
+                    <select id="clk_frm_select">
                         <option value="0">24-Hour</option>
                         <option value="1">12-Hour</option>
                     </select>
                 </div>
-
             </div>
-
-            <div>
+            
+            <div class="section-outer">
                 <h2>Alarm settings</h2>
                 <div class="section">
-                    <!-- <div > -->
-                        <h3>Alarm 1</h3>
-                        <div>
-                            <input type="checkbox">
-                            <label>Enable</label>
-                        </div>
-                        <label>Alarm time</label>
-                        <input type="time">
-                        <fieldset>
-                            <legend>Alarm day</legend>
-                            <input type="checkbox">
-                            <label>Monday</label>
-                            <input type="checkbox">
-                            <label>Tuesday</label>
-                            <input type="checkbox">
-                            <label>Wednesday</label>
-                            <input type="checkbox">
-                            <label>Thursday</label>
-                            <input type="checkbox">
-                            <label>Friday</label>
-                            <input type="checkbox">
-                            <label>Saturday</label>
-                            <input type="checkbox">
-                            <label>Sunday</label>
-                        </fieldset>
-                    <!-- </div> -->
-                    <!-- <div> -->
-                        <h3>Alarm 2</h3>
-                        <div>
-                            <input type="checkbox">
-                            <label>Enable</label>
-                        </div>
-                        <label>Alarm time</label>
-                        <input type="time">
-                        <fieldset>
-                            <legend>Alarm day</legend>
-                            <input type="checkbox">
-                            <label>Monday</label>
-                            <input type="checkbox">
-                            <label>Tuesday</label>
-                            <input type="checkbox">
-                            <label>Wednesday</label>
-                            <input type="checkbox">
-                            <label>Thursday</label>
-                            <input type="checkbox">
-                            <label>Friday</label>
-                            <input type="checkbox">
-                            <label>Saturday</label>
-                            <input type="checkbox">
-                            <label>Sunday</label>
-                        </fieldset>
-                    <!-- </div> -->
+                    <div>
+                        <label>Alarm 1</label>
+                        <input type="checkbox">
+                    </div>
+                    <label>Alarm time</label>
+                    <input type="time">
+                    <fieldset>
+                        <legend>Alarm day</legend>
+                        <input type="checkbox">
+                        <label>Monday</label>
+                        <input type="checkbox">
+                        <label>Tuesday</label>
+                        <input type="checkbox">
+                        <label>Wednesday</label>
+                        <input type="checkbox">
+                        <label>Thursday</label>
+                        <input type="checkbox">
+                        <label>Friday</label>
+                        <input type="checkbox">
+                        <label>Saturday</label>
+                        <input type="checkbox">
+                        <label>Sunday</label>
+                    </fieldset>
+                </div>
+                <div class="divider"></div>
+                <div class="section">
+                    <div>
+                        <label>Alarm 2</label>
+                        <input type="checkbox">
+                    </div>
+                    <label>Alarm time</label>
+                    <input type="time">
+                    <fieldset>
+                        <legend>Alarm day</legend>
+                        <input type="checkbox">
+                        <label>Monday</label>
+                        <input type="checkbox">
+                        <label>Tuesday</label>
+                        <input type="checkbox">
+                        <label>Wednesday</label>
+                        <input type="checkbox">
+                        <label>Thursday</label>
+                        <input type="checkbox">
+                        <label>Friday</label>
+                        <input type="checkbox">
+                        <label>Saturday</label>
+                        <input type="checkbox">
+                        <label>Sunday</label>
+                    </fieldset>
                 </div>
             </div>
 
-            <div>
+            <div class="section-outer">
                 <h2>Radio settings</h2>
                 <div class="section">
                     <label>Radio station url</label>
                     <input type="url">
+                    <label>Radio timeout</label>
+                    <input type="number">
                 </div>
                 
             </div>
             
-            <div>
+            <div class="section-outer">
                 <h2>MQTT settings</h2>
                 <div class="section">
                     <div>
-                        <input type="checkbox">
                         <label>Enable MQTT support</label>
+                        <input type="checkbox">
                     </div>
                     <label>Server</label>
                     <input type="text" minlength="7" maxlength="15" size="15" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
                     <label>Port</label>
                     <input type="number">
                     <label>username</label>
-                    <input>
+                    <input type="text">
                     <label>password</label>
                     <input type="password">
                     <label>topic</label>
-                    <input>
+                    <input type="text">
                 </div>
 
             </div>
