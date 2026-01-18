@@ -7,55 +7,87 @@
     <body>
         <h1>espAlarmClock</h1>
         <form>
-            <h2>Clock settings</h2>
-            <label>Time zone</label>
-            <input>
-            <input type="checkbox">
-            <label>Daylight savings time</label>
-            <label>Clock format</label>
-            <select>
-                <option>24-Hour</option>
-                <option>12-Hour</option>
-            </select>
+            <div>
+                <h2>Clock settings</h2>
+                <label>Time zone</label>
+                <input>
+                <input type="checkbox">
+                <label>Daylight savings time</label>
+                <label>Clock format</label>
+                <select>
+                    <option>24-Hour</option>
+                    <option>12-Hour</option>
+                </select>
+            </div>
 
-            <h2>Alarm settings</h2>
+            <div>
+                <h2>Alarm settings</h2>
+                <div>
+                    <h3>Alarm 1</h3>
+                    <input type="checkbox">Enable
+                    <label>Time</label>
+                    <input type="time">
+                    <fieldset>
+                        <legend>Alarm day</legend>
+                        <input type="checkbox">
+                        <label>Monday</label>
+                        <input type="checkbox">
+                        <label>Tuesday</label>
+                        <input type="checkbox">
+                        <label>Wednesday</label>
+                        <input type="checkbox">
+                        <label>Thursday</label>
+                        <input type="checkbox">
+                        <label>Friday</label>
+                        <input type="checkbox">
+                        <label>Saturday</label>
+                        <input type="checkbox">
+                        <label>Sunday</label>
+                    </fieldset>
+                </div>
+                <div>
+                    <h3>Alarm 2</h3>
+                    <input type="checkbox">Enable
+                    <label>Time</label>
+                    <input type="time">
+                    <fieldset>
+                        <legend>Alarm day</legend>
+                        <input type="checkbox">
+                        <label>Monday</label>
+                        <input type="checkbox">
+                        <label>Tuesday</label>
+                        <input type="checkbox">
+                        <label>Wednesday</label>
+                        <input type="checkbox">
+                        <label>Thursday</label>
+                        <input type="checkbox">
+                        <label>Friday</label>
+                        <input type="checkbox">
+                        <label>Saturday</label>
+                        <input type="checkbox">
+                        <label>Sunday</label>
+                    </fieldset>
+                </div>
+            </div>
 
-            <h3>Alarm 1</h3>
-            <input type="checkbox">Enable
-            <label>Time</label>
-            <input type="time">
-            <fieldset>
-                <legend>Day selector</legend>
-                <input type="checkbox">
-                <label>Monday</label>
-                <input type="checkbox">
-                <label>Tuesday</label>
-                <input type="checkbox">
-                <label>Wednesday</label>
-                <input type="checkbox">
-                <label>Thursday</label>
-                <input type="checkbox">
-                <label>Friday</label>
-                <input type="checkbox">
-                <label>Saturday</label>
-                <input type="checkbox">
-                <label>Sunday</label>
-            </fieldset>
-
-            <h2>Radio station settings</h2>
-            <input type="url">
-
-            <h2>MQTT settings</h2>
-            <label>Server</label>
-            <input>
-            <label>Port</label>
-            <input>
-            <label>username</label>
-            <input>
-            <label>password</label>
-            <input type="password">
-            <label>topic</label>
-            <input>
+            <div>
+                <h2>Radio station settings</h2>
+                <input type="url">
+            </div>
+            
+            <div>
+                <h2>MQTT settings</h2>
+                <label>Server</label>
+                <input type="text" minlength="7" maxlength="15" size="15" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
+                <label>Port</label>
+                <input type="number">
+                <label>username</label>
+                <input>
+                <label>password</label>
+                <input type="password">
+                <label>topic</label>
+                <input>
+            </div>
 
             <input type="submit" value="Save" />
         </form>
