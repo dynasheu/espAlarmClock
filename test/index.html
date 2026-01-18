@@ -6,51 +6,58 @@
     </head>
     <body>
         <h1>espAlarmClock</h1>
-        <h2>Clock settings</h2>
-        <label>Time zone</label>
-        <input>
-        <input type="checkbox">Daylight savings time
-        <h2>Alarm settings</h2>
-        <h3>Alarm 1</h3>
-        <input type="checkbox">Enable
-        <p>Time</p>
-        <input type="time">
-        <p>Monday</p>
-        <input type="checkbox">
-        <p>Tuesday</p>
-        <input type="checkbox">
-        <p>Wednesday</p>
-        <input type="checkbox">
-        <p>Thursday</p>
-        <input type="checkbox">
-        <p>Friday</p>
-        <input type="checkbox">
-        <p>Saturday</p>
-        <input type="checkbox">
-        <p>Sunday</p>
-        <input type="checkbox">
-        <h3>Alarm 2</h3>
-        <input type="checkbox">Enable
-        <p>Time</p>
-        <input type="time">
-        <p>Monday</p>
-        <input type="checkbox">
-        <p>Tuesday</p>
-        <input type="checkbox">
-        <p>Wednesday</p>
-        <input type="checkbox">
-        <p>Thursday</p>
-        <input type="checkbox">
-        <p>Friday</p>
-        <input type="checkbox">
-        <p>Saturday</p>
-        <input type="checkbox">
-        <p>Sunday</p>
-        <input type="checkbox">
-        <h2>Radio station settings</h2>
-        <input type="url">
-        <h2>MQTT settings</h2>
-        <h2></h2>
-        <button>Save</button>
+        <form>
+            <h2>Clock settings</h2>
+            <label>Time zone</label>
+            <input>
+            <input type="checkbox">
+            <label>Daylight savings time</label>
+            <label>Clock format</label>
+            <select>
+                <option>24-Hour</option>
+                <option>12-Hour</option>
+            </select>
+
+            <h2>Alarm settings</h2>
+
+            <h3>Alarm 1</h3>
+            <input type="checkbox">Enable
+            <label>Time</label>
+            <input type="time">
+            <fieldset>
+                <legend>Day selector</legend>
+                <input type="checkbox">
+                <label>Monday</label>
+                <input type="checkbox">
+                <label>Tuesday</label>
+                <input type="checkbox">
+                <label>Wednesday</label>
+                <input type="checkbox">
+                <label>Thursday</label>
+                <input type="checkbox">
+                <label>Friday</label>
+                <input type="checkbox">
+                <label>Saturday</label>
+                <input type="checkbox">
+                <label>Sunday</label>
+            </fieldset>
+
+            <h2>Radio station settings</h2>
+            <input type="url">
+
+            <h2>MQTT settings</h2>
+            <label>Server</label>
+            <input>
+            <label>Port</label>
+            <input>
+            <label>username</label>
+            <input>
+            <label>password</label>
+            <input type="password">
+            <label>topic</label>
+            <input>
+
+            <input type="submit" value="Save" />
+        </form>
     </body>
 </html>
