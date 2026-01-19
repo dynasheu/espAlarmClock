@@ -2,24 +2,21 @@
     <head>
         <title>espAlarmClock</title>
         <style>
-            body {
-                background-color: #238580;
-                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-                padding: 0;
-                margin: 0;
-            }
+            :root {
+                --background-color: #87bbb2;
+                --border-color: #124946;
+                --heading-text: var(--border-color);
+                --heading-background: var(--border-color);
 
-            .wrapper {
-                min-width: 300px;
-                max-width: 500px;
-                margin: 0 auto;
-                padding: 0;
+                --border-width: 2px;
             }
 
             h1 {
-                background-color: #EB913E;
-                color: #4321DF;
+                /* background-color: var(--border-color); */
+                color: var(--heading-text);
                 text-align: center;
+                font-size: 18px;
+                font-weight: 700;
                 padding: 0.5em;
                 margin: 0 0 0.5em 0;
                 border-bottom-left-radius: 5px;
@@ -27,35 +24,40 @@
             }
 
             h2 {
-                background-color: #430d75;
-                color: #EB913E;
+                /* background-color: var(--heading-background); */
+                color: var(--heading-text);
                 text-align: center;
-                padding: 0.25em;
+                font-size: 16px;
+                font-weight: 500;
+                /* padding: 0.25em; */
                 margin: 0;
             }
 
             .section-outer {
                 border-radius: 5px;
-                border: 5px solid #3456AB;
+                /* background-color: var(--border-color); */
+                border: var(--border-width) solid var(--border-color);
                 margin-bottom: 1em;
+                padding: 4px;
             }
 
             .section {
                 color: #000000;
-                background-color: #ED3F42;
+                /* background-color: #ED3F42; */
                 padding: 0.75em;
                 display: flex;
                 flex-direction: column;
+                border-radius: 3px;
             }
 
             label {
-                /* font-size: 1.2em; */
-                padding-bottom: 0.25em;
+                padding: 0.25em;
+                /* background-color: lawngreen; */
             }
 
             .divider {
-                background-color: #3456AB;
-                height: 5px;
+                border-bottom: var(--border-width) dashed var(--border-color);
+
             }
 
             input[type=text], 
@@ -67,9 +69,12 @@
                 width: 100%;
                 padding: 0.5em 0.5em;
                 display: inline-block;
-                border: 1px solid #220070;
+                border: 1px solid var(--border-color);
                 border-radius: 3px;
-                box-sizing: border-box;
+            }
+
+            input[type=time] {
+                text-align: center;
             }
 
             input[type=submit] {
@@ -95,6 +100,36 @@
                 color: #000000;
             }
 
+            .toggler {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            html {
+                box-sizing: border-box;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            * {
+                box-sizing: inherit;
+                &:before,
+                &:after {
+                    box-sizing: inherit;
+                }
+            }
+
+            body {
+                background-color: var(--background-color);
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                justify-content: center;
+                padding: 0;
+                margin: 0;
+                .wrapper {
+                    max-width: 400px;
+                }
+            }
 
         </style>
     </head>
@@ -148,7 +183,7 @@
                         <option value="13">(GMT +13:00) Apia, Nukualofa</option>
                         <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
                     </select>
-                    <div>
+                    <div class="toggler">
                         <label for="dst_toggle">Daylight savings time</label>
                         <input id="dst_toggle" type="checkbox">
                     </div>
@@ -163,7 +198,7 @@
             <div class="section-outer">
                 <h2>Alarm settings</h2>
                 <div class="section">
-                    <div>
+                    <div class="toggler">
                         <label>Alarm 1</label>
                         <input type="checkbox">
                     </div>
@@ -171,25 +206,25 @@
                     <input type="time">
                     <fieldset>
                         <legend>Alarm day</legend>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Monday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Tuesday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Wednesday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Thursday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Friday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Saturday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Sunday</label>
                     </fieldset>
                 </div>
                 <div class="divider"></div>
                 <div class="section">
-                    <div>
+                    <div class="toggler">
                         <label>Alarm 2</label>
                         <input type="checkbox">
                     </div>
@@ -197,19 +232,19 @@
                     <input type="time">
                     <fieldset>
                         <legend>Alarm day</legend>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Monday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Tuesday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Wednesday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Thursday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Friday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Saturday</label>
-                        <input type="checkbox">
+                        <input type="checkbox" checked>
                         <label>Sunday</label>
                     </fieldset>
                 </div>
@@ -218,10 +253,10 @@
             <div class="section-outer">
                 <h2>Radio settings</h2>
                 <div class="section">
-                    <label>Radio station url</label>
-                    <input type="url">
+                    <label>Radio station</label>
+                    <input type="url" placeholder="Enter radio station url">
                     <label>Radio timeout</label>
-                    <input type="number">
+                    <input type="number" min="1" placeholder="Enter positive value in minutes">
                 </div>
                 
             </div>
@@ -229,20 +264,20 @@
             <div class="section-outer">
                 <h2>MQTT settings</h2>
                 <div class="section">
-                    <div>
-                        <label>Enable MQTT support</label>
+                    <div class="toggler">
+                        <label>MQTT support</label>
                         <input type="checkbox">
                     </div>
                     <label>Server</label>
-                    <input type="text" minlength="7" maxlength="15" size="15" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
+                    <input type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
                     <label>Port</label>
-                    <input type="number">
+                    <input type="number" placeholder="Enter MQTT server port">
                     <label>username</label>
-                    <input type="text">
+                    <input type="text" placeholder="Enter MQTT username">
                     <label>password</label>
-                    <input type="password">
+                    <input type="password" placeholder="Enter MQTT password">
                     <label>topic</label>
-                    <input type="text">
+                    <input type="text" placeholder="Enter MQTT topic for communication">
                 </div>
 
             </div>
