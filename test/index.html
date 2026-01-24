@@ -3,17 +3,13 @@
         <title>espAlarmClock</title>
         <style>
             :root {
-                --background-color: #87bbb2;
-                --border-color: #124946;
-                --heading-text: var(--border-color);
-                --heading-background: var(--border-color);
-
-                --border-width: 2px;
+                /* will work on this later */
+                --border-color: #833AB4;
+                --border-width: 3px;
             }
 
             h1 {
-                /* background-color: var(--border-color); */
-                color: var(--heading-text);
+                color: #833AB4;
                 text-align: center;
                 font-size: 18px;
                 font-weight: 700;
@@ -23,41 +19,21 @@
                 border-bottom-right-radius: 5px;
             }
 
-            h2 {
-                /* background-color: var(--heading-background); */
-                color: var(--heading-text);
-                text-align: center;
-                font-size: 16px;
-                font-weight: 500;
-                /* padding: 0.25em; */
-                margin: 0;
-            }
-
-            .section-outer {
-                border-radius: 5px;
-                /* background-color: var(--border-color); */
-                border: var(--border-width) solid var(--border-color);
-                margin-bottom: 1em;
-                padding: 4px;
-            }
-
             .section {
                 color: #000000;
-                /* background-color: #ED3F42; */
+                background-color: #222;
+                border: 3px solid #833AB4;
                 padding: 0.75em;
+                margin: 0;
                 display: flex;
                 flex-direction: column;
-                border-radius: 3px;
+                border-radius: 10px;
+                margin-bottom: 1em;
+                color: #FFFFFF;
             }
 
             label {
                 padding: 0.25em;
-                /* background-color: lawngreen; */
-            }
-
-            .divider {
-                border-bottom: var(--border-width) dashed var(--border-color);
-
             }
 
             input[type=text], 
@@ -67,43 +43,66 @@
             input[type=time], 
             select {
                 width: 100%;
+                background-color: #333333;
+                color: white;
                 padding: 0.5em 0.5em;
                 display: inline-block;
-                border: 1px solid var(--border-color);
+                border: 2px solid #833AB4;
                 border-radius: 3px;
             }
 
             input[type=time] {
                 text-align: center;
             }
-
-            input[type=submit] {
-                width: 100%;
-                background-color: #430d75;
-                color:#EB913E;
-                border: 5px solid #3456AB;
-                border-radius: 5px;
-                cursor: pointer;
-                padding: 0.5em;
-                margin-bottom: 1em;
-                font-size: 1em;
-                font-weight: 700;
+            
+            .button {
+                background: #833AB4;
+                background: linear-gradient(80deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+                animation: ScrollBackground 10s ease infinite;
+                background-size: 300% 300%;
+                border-radius: 10px;
+                padding: 3px;
+                margin-bottom: 2em;
+                width: 80%;
+                align-items: center;
+                input[type=submit] {
+                    width: 100%;
+                    background-color:#202020;
+                    border: 0;
+                    border-radius: 7px;
+                    color: #833AB4;
+                    cursor: pointer;
+                    padding: 0.5em;
+                    font-size: 1em;
+                    font-weight: 700;
+                    &:hover {
+                        background-color: rgba(0, 0, 0, 0);
+                        color: white;
+                    }
+                    &:active {
+                        background-color: #222;
+                        color:#833AB4;
+                    }
+                }
             }
 
-            input[type=submit]:hover {
-                background-color: #3456AB;
-            }
-
-            input[type=submit]:active {
-                background-color: #ED3F42;
-                border: 5px solid #ED3F42;
-                color: #000000;
+            @keyframes ScrollBackground {
+                0%{background-position: 0% 50%;}
+                50%{background-position: 100% 50%;}
+                100%{background-position: 0% 50%;}
             }
 
             .toggler {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                label {
+                    width: 100%;
+                    cursor: pointer;
+                }
+                span {
+                    background-color: #833ab4;
+                }
             }
 
             html {
@@ -120,14 +119,22 @@
             }
 
             body {
-                background-color: var(--background-color);
+
+                background: repeating-linear-gradient(
+                    -45deg,
+                    #202020,
+                    #202020 6px,
+                    #222 6px,
+                    #222 20px
+                    );
                 font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 display: flex;
                 justify-content: center;
                 padding: 0;
                 margin: 0;
                 .wrapper {
-                    max-width: 400px;
+                    width: 600px;
+                    min-width: 300px;
                 }
             }
 
@@ -137,153 +144,137 @@
         <div class="wrapper">
         <h1>espAlarmClock</h1>
         <form>
-            <div class="section-outer">
-                <h2>Clock settings</h2>
-                <div class="section">
-                    <label for="tz_select">Time zone</label>
-                    <select id="tz_select">
-                        <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
-                        <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
-                        <option value="-10">(GMT -10:00) Hawaii</option>
-                        <option value="-9.5">(GMT -9:30) Taiohae</option>
-                        <option value="-9">(GMT -9:00) Alaska</option>
-                        <option value="-8">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
-                        <option value="-7">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
-                        <option value="-6">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
-                        <option value="-5">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
-                        <option value="-4.5">(GMT -4:30) Caracas</option>
-                        <option value="-4">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
-                        <option value="-3.5">(GMT -3:30) Newfoundland</option>
-                        <option value="-3">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
-                        <option value="-2">(GMT -2:00) Mid-Atlantic</option>
-                        <option value="-1">(GMT -1:00) Azores, Cape Verde Islands</option>
-                        <option value="0" selected="selected">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
-                        <option value="1">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
-                        <option value="2">(GMT +2:00) Kaliningrad, South Africa</option>
-                        <option value="3">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
-                        <option value="3.5">(GMT +3:30) Tehran</option>
-                        <option value="4">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
-                        <option value="4.5">(GMT +4:30) Kabul</option>
-                        <option value="5">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
-                        <option value="5.5">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
-                        <option value="5.75">(GMT +5:45) Kathmandu, Pokhara</option>
-                        <option value="6">(GMT +6:00) Almaty, Dhaka, Colombo</option>
-                        <option value="6.5">(GMT +6:30) Yangon, Mandalay</option>
-                        <option value="7">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
-                        <option value="8">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
-                        <option value="8.75">(GMT +8:45) Eucla</option>
-                        <option value="9">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
-                        <option value="9.5">(GMT +9:30) Adelaide, Darwin</option>
-                        <option value="10">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
-                        <option value="10.5">(GMT +10:30) Lord Howe Island</option>
-                        <option value="11">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
-                        <option value="11.5">(GMT +11:30) Norfolk Island</option>
-                        <option value="12">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
-                        <option value="12.75">(GMT +12:45) Chatham Islands</option>
-                        <option value="13">(GMT +13:00) Apia, Nukualofa</option>
-                        <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
-                    </select>
-                    <div class="toggler">
-                        <label for="dst_toggle">Daylight savings time</label>
-                        <input id="dst_toggle" type="checkbox">
-                    </div>
-                    <label for="clk_frm_select">Clock format</label>
-                    <select id="clk_frm_select">
-                        <option value="0">24-Hour</option>
-                        <option value="1">12-Hour</option>
-                    </select>
+            <div class="section">
+                <label for="tz_select">Time zone</label>
+                <select id="tz_select">
+                    <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
+                    <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
+                    <option value="-10">(GMT -10:00) Hawaii</option>
+                    <option value="-9.5">(GMT -9:30) Taiohae</option>
+                    <option value="-9">(GMT -9:00) Alaska</option>
+                    <option value="-8">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+                    <option value="-7">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+                    <option value="-6">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+                    <option value="-5">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+                    <option value="-4.5">(GMT -4:30) Caracas</option>
+                    <option value="-4">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+                    <option value="-3.5">(GMT -3:30) Newfoundland</option>
+                    <option value="-3">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+                    <option value="-2">(GMT -2:00) Mid-Atlantic</option>
+                    <option value="-1">(GMT -1:00) Azores, Cape Verde Islands</option>
+                    <option value="0" selected="selected">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+                    <option value="1">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+                    <option value="2">(GMT +2:00) Kaliningrad, South Africa</option>
+                    <option value="3">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+                    <option value="3.5">(GMT +3:30) Tehran</option>
+                    <option value="4">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+                    <option value="4.5">(GMT +4:30) Kabul</option>
+                    <option value="5">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+                    <option value="5.5">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+                    <option value="5.75">(GMT +5:45) Kathmandu, Pokhara</option>
+                    <option value="6">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+                    <option value="6.5">(GMT +6:30) Yangon, Mandalay</option>
+                    <option value="7">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+                    <option value="8">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+                    <option value="8.75">(GMT +8:45) Eucla</option>
+                    <option value="9">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+                    <option value="9.5">(GMT +9:30) Adelaide, Darwin</option>
+                    <option value="10">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+                    <option value="10.5">(GMT +10:30) Lord Howe Island</option>
+                    <option value="11">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+                    <option value="11.5">(GMT +11:30) Norfolk Island</option>
+                    <option value="12">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+                    <option value="12.75">(GMT +12:45) Chatham Islands</option>
+                    <option value="13">(GMT +13:00) Apia, Nukualofa</option>
+                    <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
+                </select>
+                <div class="toggler">
+                    <span>Test</span>
+                    <label for="dst_toggle">Daylight savings time</label>
+                    <input id="dst_toggle" type="checkbox">
                 </div>
+                <label for="clk_frm_select">Clock format</label>
+                <select id="clk_frm_select">
+                    <option value="0">24-Hour</option>
+                    <option value="1">12-Hour</option>
+                </select>
             </div>
             
-            <div class="section-outer">
-                <h2>Alarm settings</h2>
-                <div class="section">
+            <div class="section">
                     <div class="toggler">
                         <label>Alarm 1</label>
                         <input type="checkbox">
                     </div>
                     <label>Alarm time</label>
                     <input type="time">
-                    <fieldset>
-                        <legend>Alarm day</legend>
-                        <input type="checkbox" checked>
-                        <label>Monday</label>
-                        <input type="checkbox" checked>
-                        <label>Tuesday</label>
-                        <input type="checkbox" checked>
-                        <label>Wednesday</label>
-                        <input type="checkbox" checked>
-                        <label>Thursday</label>
-                        <input type="checkbox" checked>
-                        <label>Friday</label>
-                        <input type="checkbox" checked>
-                        <label>Saturday</label>
-                        <input type="checkbox" checked>
-                        <label>Sunday</label>
-                    </fieldset>
+                    <input type="checkbox" checked>
+                    <label>Monday</label>
+                    <input type="checkbox" checked>
+                    <label>Tuesday</label>
+                    <input type="checkbox" checked>
+                    <label>Wednesday</label>
+                    <input type="checkbox" checked>
+                    <label>Thursday</label>
+                    <input type="checkbox" checked>
+                    <label>Friday</label>
+                    <input type="checkbox" checked>
+                    <label>Saturday</label>
+                    <input type="checkbox" checked>
+                    <label>Sunday</label>
+            </div>
+            <div class="section">
+                <div class="toggler">
+                    <label>Alarm 2</label>
+                    <input type="checkbox">
                 </div>
-                <div class="divider"></div>
-                <div class="section">
-                    <div class="toggler">
-                        <label>Alarm 2</label>
-                        <input type="checkbox">
-                    </div>
-                    <label>Alarm time</label>
-                    <input type="time">
-                    <fieldset>
-                        <legend>Alarm day</legend>
-                        <input type="checkbox" checked>
-                        <label>Monday</label>
-                        <input type="checkbox" checked>
-                        <label>Tuesday</label>
-                        <input type="checkbox" checked>
-                        <label>Wednesday</label>
-                        <input type="checkbox" checked>
-                        <label>Thursday</label>
-                        <input type="checkbox" checked>
-                        <label>Friday</label>
-                        <input type="checkbox" checked>
-                        <label>Saturday</label>
-                        <input type="checkbox" checked>
-                        <label>Sunday</label>
-                    </fieldset>
-                </div>
+                <label>Alarm time</label>
+                <input type="time">
+
+                <input type="checkbox" checked>
+                <label>Monday</label>
+                <input type="checkbox" checked>
+                <label>Tuesday</label>
+                <input type="checkbox" checked>
+                <label>Wednesday</label>
+                <input type="checkbox" checked>
+                <label>Thursday</label>
+                <input type="checkbox" checked>
+                <label>Friday</label>
+                <input type="checkbox" checked>
+                <label>Saturday</label>
+                <input type="checkbox" checked>
+                <label>Sunday</label>
             </div>
 
-            <div class="section-outer">
-                <h2>Radio settings</h2>
-                <div class="section">
-                    <label>Radio station</label>
-                    <input type="url" placeholder="Enter radio station url">
-                    <label>Radio timeout</label>
-                    <input type="number" min="1" placeholder="Enter positive value in minutes">
-                </div>
+            <div class="section">
+                <label>Radio station</label>
+                <input type="url" placeholder="Enter radio station url">
+                <label>Radio timeout</label>
+                <input type="number" min="1" placeholder="Enter positive value in minutes">
+            </div>
                 
-            </div>
-            
-            <div class="section-outer">
-                <h2>MQTT settings</h2>
-                <div class="section">
-                    <div class="toggler">
-                        <label>MQTT support</label>
-                        <input type="checkbox">
-                    </div>
-                    <label>Server</label>
-                    <input type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
-                    <label>Port</label>
-                    <input type="number" placeholder="Enter MQTT server port">
-                    <label>username</label>
-                    <input type="text" placeholder="Enter MQTT username">
-                    <label>password</label>
-                    <input type="password" placeholder="Enter MQTT password">
-                    <label>topic</label>
-                    <input type="text" placeholder="Enter MQTT topic for communication">
+                
+            <div class="section">
+                <div class="toggler">
+                    <label>MQTT support</label>
+                    <input type="checkbox">
                 </div>
-
+                <label>Server</label>
+                <input type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
+                <label>Port</label>
+                <input type="number" placeholder="Enter MQTT server port">
+                <label>username</label>
+                <input type="text" placeholder="Enter MQTT username">
+                <label>password</label>
+                <input type="password" placeholder="Enter MQTT password">
+                <label>topic</label>
+                <input type="text" placeholder="Enter MQTT topic for communication">
             </div>
         </form>
 
-        <input type="submit" value="Save" />
+        <div class="button">
+            <input type="submit" value="Save" />    
+        </div>
         </div>
     </body>
 </html>
