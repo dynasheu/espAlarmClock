@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>espAlarmClock</title>
@@ -78,7 +79,7 @@
                     font-weight: 700;
                     &:hover {
                         background-color: rgba(0, 0, 0, 0);
-                        color: white;
+                        color: #FFFFFF;
                     }
                     &:active {
                         background-color: #222;
@@ -97,6 +98,7 @@
                 margin-top: 10px;
 
             }
+
             .toggler {
                 display: flex;
                 flex-direction: row;
@@ -140,7 +142,7 @@
                 width: 20px;
                 height: 20px;
                 border-radius: 3px;
-                background: white;
+                background: #FFFFFF;
                 transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
                 flex-shrink: 0;
                 }
@@ -150,9 +152,83 @@
 
                 .toggle:checked:after {
                 transform: translatex(20px);
-                background: green;
+                background: #86d993;
                 }
 
+                /* copied from https://codepen.io/avstorm/pen/jOEpBLW */
+            }
+
+            .slider {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 10px;
+
+                input[type="range"] {
+                    -webkit-appearance: none;
+                    background: #333333;
+                    border: 2px solid #474747;
+                    border-radius: 6px;
+                    height: 28px;
+                    margin: 0;
+                    padding-left: 2px;
+                    padding-right: 2px; 
+                }
+
+                input[type="range"]::-moz-range-thumb {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 3px;
+                    top: 2px;
+                    border: 0;
+                    background: #FFFFFF;
+                }
+
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 3px;
+                    top: 2px;
+                    border: 0;
+                    background: #FFFFFF;
+                }
+            }
+
+            .week {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .day {
+                flex-grow: 1;
+
+                label {
+                    /* width: 50px; */
+                    height: 28px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    border-radius: 6px;
+                    border: 2px solid #474747;
+                    outline: 2px solid #333333;
+                    outline-offset: -4px;
+                    background: #d98986;
+                    color: #FFFFFF;
+                    font-weight: 400;
+                    transition: all 0.2s ease;
+                }
+
+                input:checked + label {
+                    background: #86d993;
+                    color: black;
+                }
+
+                input[type="checkbox"] {
+                    display: none;
+                }
             }
 
             html {
@@ -194,6 +270,14 @@
             }
 
         </style>
+        <script>
+            function toggle(id) {
+                var ele = document.getElementById(id);
+                if (ele)
+                  ele.style.display = ele.style.display === "none" ? "flex" : "none";
+
+            }
+        </script>
     </head>
     <body>
         <div class="wrapper">
@@ -254,9 +338,9 @@
                 </select>
                 <div class="toggler">
                     <label for="auto_brightnes_toggle">Automatic brightness</label>
-                    <input id="auto_brightnes_toggle" type="checkbox" class="toggle" name="auto_brightnes">
+                    <input id="auto_brightnes_toggle" type="checkbox" class="toggle" name="auto_brightnes" onclick="toggle('brightness_slider')">
                 </div>
-                <div class="toggler">
+                <div class="slider" id="brightness_slider">
                     <label for="brightness">Brightness Level</label>
                     <input  id="brightness" type="range" name="brightness" min="0" max="15" value="10">
                 </div>
@@ -264,26 +348,43 @@
             </div>
             
             <div class="section">
-                    <div class="toggler">
-                        <label>Alarm 1</label>
-                        <input type="checkbox" class="toggle" >
+                <div class="toggler">
+                    <label>Alarm 1</label>
+                    <input type="checkbox" class="toggle" >
+                </div>
+                <label>Alarm time</label>
+                <input type="time">
+
+                <div class="week">
+                    <div class="day">
+                        <input id="mon1" type="checkbox" checked>
+                        <label for="mon1">M</label>
                     </div>
-                    <label>Alarm time</label>
-                    <input type="time">
-                    <input type="checkbox" checked>
-                    <label>Monday</label>
-                    <input type="checkbox" checked>
-                    <label>Tuesday</label>
-                    <input type="checkbox" checked>
-                    <label>Wednesday</label>
-                    <input type="checkbox" checked>
-                    <label>Thursday</label>
-                    <input type="checkbox" checked>
-                    <label>Friday</label>
-                    <input type="checkbox" checked>
-                    <label>Saturday</label>
-                    <input type="checkbox" checked>
-                    <label>Sunday</label>
+                    <div class="day">
+                        <input id="tue1" type="checkbox" checked>
+                        <label for="tue1">T</label>
+                    </div>
+                    <div class="day">
+                        <input id="wed1" type="checkbox" checked>
+                        <label for="wed1">W</label>
+                    </div>
+                    <div class="day">
+                        <input id="thu1" type="checkbox" checked>
+                        <label for="thu1">T</label>
+                    </div>
+                    <div class="day">
+                        <input id="fri1" type="checkbox" checked>
+                        <label for="fri1">F</label>
+                    </div>
+                    <div class="day">
+                        <input id="sat1" type="checkbox" checked>
+                        <label for="sat1">S</label>
+                    </div>
+                    <div class="day">
+                        <input id="sun1" type="checkbox" checked>
+                        <label for="sun1">S</label>
+                    </div>
+                </div>
             </div>
             
             <div class="section">
@@ -294,20 +395,36 @@
                 <label>Alarm time</label>
                 <input type="time">
 
-                <input type="checkbox" checked>
-                <label>Monday</label>
-                <input type="checkbox" checked>
-                <label>Tuesday</label>
-                <input type="checkbox" checked>
-                <label>Wednesday</label>
-                <input type="checkbox" checked>
-                <label>Thursday</label>
-                <input type="checkbox" checked>
-                <label>Friday</label>
-                <input type="checkbox" checked>
-                <label>Saturday</label>
-                <input type="checkbox" checked>
-                <label>Sunday</label>
+                <div class="week">
+                    <div class="day">
+                        <input id="mon2" type="checkbox" checked>
+                        <label for="mon2">M</label>
+                    </div>
+                    <div class="day">
+                        <input id="tue2" type="checkbox" checked>
+                        <label for="tue2">T</label>
+                    </div>
+                    <div class="day">
+                        <input id="wed2" type="checkbox" checked>
+                        <label for="wed2">W</label>
+                    </div>
+                    <div class="day">
+                        <input id="thu2" type="checkbox" checked>
+                        <label for="thu2">T</label>
+                    </div>
+                    <div class="day">
+                        <input id="fri2" type="checkbox" checked>
+                        <label for="fri2">F</label>
+                    </div>
+                    <div class="day">
+                        <input id="sat2" type="checkbox" checked>
+                        <label for="sat2">S</label>
+                    </div>
+                    <div class="day">
+                        <input id="sun2" type="checkbox" checked>
+                        <label for="sun2">S</label>
+                    </div>
+                </div>
             </div>
 
             <div class="section">
