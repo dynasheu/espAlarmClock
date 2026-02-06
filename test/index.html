@@ -15,8 +15,6 @@
                 font-weight: 700;
                 padding: 0.5em;
                 margin: 0 0 0.5em 0;
-                border-bottom-left-radius: 5px;
-                border-bottom-right-radius: 5px;
             }
 
             .section {
@@ -27,6 +25,7 @@
                 margin: 0;
                 display: flex;
                 flex-direction: column;
+                flex-shrink: 0;
                 border-radius: 10px;
                 margin-bottom: 1em;
                 color: #FFFFFF;
@@ -47,8 +46,8 @@
                 color: white;
                 padding: 0.5em 0.5em;
                 display: inline-block;
-                border: 2px solid #833AB4;
-                border-radius: 3px;
+                border: 2px solid #474747;
+                border-radius: 5px;
             }
 
             input[type=time] {
@@ -63,6 +62,8 @@
                 border-radius: 10px;
                 padding: 3px;
                 margin-bottom: 2em;
+                margin-left: auto;
+                margin-right: auto;
                 width: 80%;
                 align-items: center;
                 input[type=submit] {
@@ -92,17 +93,66 @@
                 100%{background-position: 0% 50%;}
             }
 
+            .toggler:not(:first-child) {
+                margin-top: 10px;
+
+            }
             .toggler {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+
                 label {
                     width: 100%;
                     cursor: pointer;
                 }
-                span {
-                    background-color: #833ab4;
+
+                input[type=checkbox] {
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    -webkit-tap-highlight-color: transparent;
+                    cursor: pointer;
                 }
+
+                input[type=checkbox]:focus {
+                    outline: 0;
+                }
+
+                .toggle {
+                height: 28px;
+                width: 48px;
+                border-radius: 6px;
+                display: inline-block;
+                position: relative;
+                margin: 0;
+                border: 2px solid #474747;
+                transition: all 0.2s ease;
+                flex-shrink: 0;
+                background: #333333;
+                }
+
+                .toggle:after {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                width: 20px;
+                height: 20px;
+                border-radius: 3px;
+                background: white;
+                transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+                flex-shrink: 0;
+                }
+                /* .toggle:checked {
+                border-color: #654FEC;
+                } */
+
+                .toggle:checked:after {
+                transform: translatex(20px);
+                background: green;
+                }
+
             }
 
             html {
@@ -119,7 +169,6 @@
             }
 
             body {
-
                 background: repeating-linear-gradient(
                     -45deg,
                     #202020,
@@ -135,6 +184,12 @@
                 .wrapper {
                     width: 600px;
                     min-width: 300px;
+                    max-width: 600px;
+                    flex-shrink: 0;
+                    /* display: flex;
+                    flex-direction: column;
+                    justify-content: center; */
+                    
                 }
             }
 
@@ -146,7 +201,7 @@
         <form>
             <div class="section">
                 <label for="tz_select">Time zone</label>
-                <select id="tz_select">
+                <select id="tz_select" name="timezone">
                     <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
                     <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
                     <option value="-10">(GMT -10:00) Hawaii</option>
@@ -189,21 +244,29 @@
                     <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
                 </select>
                 <div class="toggler">
-                    <span>Test</span>
                     <label for="dst_toggle">Daylight savings time</label>
-                    <input id="dst_toggle" type="checkbox">
+                    <input id="dst_toggle" type="checkbox" class="toggle" name="dst" checked>
                 </div>
                 <label for="clk_frm_select">Clock format</label>
-                <select id="clk_frm_select">
+                <select id="clk_frm_select" name="clock_format">
                     <option value="0">24-Hour</option>
                     <option value="1">12-Hour</option>
                 </select>
+                <div class="toggler">
+                    <label for="auto_brightnes_toggle">Automatic brightness</label>
+                    <input id="auto_brightnes_toggle" type="checkbox" class="toggle" name="auto_brightnes">
+                </div>
+                <div class="toggler">
+                    <label for="brightness">Brightness Level</label>
+                    <input  id="brightness" type="range" name="brightness" min="0" max="15" value="10">
+                </div>
+
             </div>
             
             <div class="section">
                     <div class="toggler">
                         <label>Alarm 1</label>
-                        <input type="checkbox">
+                        <input type="checkbox" class="toggle" >
                     </div>
                     <label>Alarm time</label>
                     <input type="time">
@@ -222,10 +285,11 @@
                     <input type="checkbox" checked>
                     <label>Sunday</label>
             </div>
+            
             <div class="section">
                 <div class="toggler">
                     <label>Alarm 2</label>
-                    <input type="checkbox">
+                    <input type="checkbox" class="toggle" >
                 </div>
                 <label>Alarm time</label>
                 <input type="time">
@@ -257,7 +321,7 @@
             <div class="section">
                 <div class="toggler">
                     <label>MQTT support</label>
-                    <input type="checkbox">
+                    <input type="checkbox" class="toggle">
                 </div>
                 <label>Server</label>
                 <input type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
