@@ -9,8 +9,16 @@
 #include <esp_sntp.h>
 #include <avdweb_Switch.h> // https://github.com/avdwebLibraries/avdweb_Switch
 #include <LedController.hpp> // https://github.com/noah1510/LedController
+#include <Wire.h>
+#include <SparkFun_VEML7700_Arduino_Library.h> // https://github.com/sparkfun/SparkFun_VEML7700_Arduino_Library
 
 #define FORMAT_SPIFFS_IF_FAILED true
+
+// conenctions
+// audio - BClk, LRClk, Din, Gain to ground, SD not connected
+// display driver - Din, CS/Load, Clk
+// brightness control - SDA, SCL
+
 
 //define your default values here, if there are different values in config.json, they are overwritten.
 char mqtt_server[40];
@@ -23,6 +31,7 @@ char radio_volume[4] = "8";
 char radio_play_time[6] = "30"; // in minutes
 char clock_gmt_offset[3] = "1"; // in hours
 char clock_daylight_offset[3] ="1"; // in hours
+char clock_TZ[42] = "CET-1CEST,M3.5.0/02:00,M10.5.0/03:00"; // POSIX TZ string
 
 
 const char* ntpServer = "pool.ntp.org";
@@ -30,6 +39,10 @@ const int ntpInterval = 3600;
 unsigned long lastClockRefresh = 0;
 long clockRefreshTime = 1000;
 int oldClock = 0;
+
+// brightness settings
+float luxValue = 0;
+int autoBrightness = 1; // for testing purposes 
 
 //flag for saving data
 bool shouldSaveConfig = false;
@@ -41,6 +54,8 @@ const int clockPinLoad = 11;
 const int audioPinBClk = 36;
 const int audioPinData = 44;
 const int audioPinLRClk = 35;
+const int i2cSDA = 16;
+const int i2cSCL = 43;
 const int volumeUpPin = 13;
 const int volumeDownPin = 12;
 const int playPin = 18;
@@ -63,6 +78,9 @@ Audio audio;
 
 // display
 LedController<1,1> lc = LedController<1,1>(clockPinData,clockPinClk,clockPinLoad);
+
+// light sensor
+SparkFunVEML7700 mySensor;
 
 //mqtt client
 WiFiClient espClient;
@@ -199,9 +217,17 @@ void displayTime() {
 void setup() {
   // initialize serial
   Serial.begin(115200);
-  // while (!Serial) // this fails board from starting when it is not connected to PC, it could be conented toEnabled option CDC on Boot
+  // while (!Serial) // this fails board from starting when it is not connected to PC, it could be connected toEnabled option CDC on Boot
   delay(10);
   Serial.println("Serial online");
+
+  Wire.begin(i2cSDA, i2cSCL);
+
+  if ( mySensor.begin() == false ) {
+      Serial.println("Unable to communicate with the VEML7700. Please check the wiring. Freezing...");
+      while (1)
+          ;
+  }
 
   // initialize sonsor pins and sensor struct
   pinMode(clockPinClk, OUTPUT);
@@ -348,7 +374,8 @@ void setup() {
   client.setCallback(mqttCallback);
 
   // ntp setup
-  configTime(60*60*atoi(clock_gmt_offset), 60*60*atoi(clock_daylight_offset), ntpServer);
+  // configTime(60*60*atoi(clock_gmt_offset), 60*60*atoi(clock_daylight_offset), ntpServer);
+  configTzTime(clock_TZ, ntpServer);
   // setSyncInterval(ntpInterval);
 
   // display setup
@@ -420,6 +447,21 @@ void loop() {
 
   if ( millis() - lastClockRefresh > clockRefreshTime ) {
     displayTime();
+    
+
+    if ( autoBrightness == 1 ) {
+      luxValue = mySensor.getLux();
+      Serial.print("lux value ");
+      Serial.println(luxValue);
+      if (luxValue > 100) {
+        lc.setIntensity(15);
+      }
+      else {
+        lc.setIntensity(5);
+      }
+      
+    }
+    
 
     // show heap and ps ram usage for debugging
     // Serial.printf("Free Heap:   %d\n", ESP.getFreeHeap());

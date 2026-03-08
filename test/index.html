@@ -283,10 +283,10 @@
     <body>
         <div class="wrapper">
         <h1>espAlarmClock</h1>
-        <form>
+        <form action="/save">
             <div class="section">
-                <label for="tz_select">Time zone</label>
-                <select id="tz_select" name="timezone">
+                <label for="timezone">Time zone</label>
+                <select id="timezone" name="timezone">
                     <option value="-12">(GMT -12:00) Eniwetok, Kwajalein</option>
                     <option value="-11">(GMT -11:00) Midway Island, Samoa</option>
                     <option value="-10">(GMT -10:00) Hawaii</option>
@@ -329,17 +329,17 @@
                     <option value="14">(GMT +14:00) Line Islands, Tokelau</option>
                 </select>
                 <div class="toggler">
-                    <label for="dst_toggle">Daylight savings time</label>
-                    <input id="dst_toggle" type="checkbox" class="toggle" name="dst" checked>
+                    <label for="dst">Daylight savings time</label>
+                    <input id="dst" type="checkbox" class="toggle" name="dst" checked>
                 </div>
-                <label for="clk_frm_select">Clock format</label>
-                <select id="clk_frm_select" name="clock_format">
+                <label for="clock_format">Clock format</label>
+                <select id="clock_format" name="clock_format">
                     <option value="0">24-Hour</option>
                     <option value="1">12-Hour</option>
                 </select>
                 <div class="toggler">
-                    <label for="auto_brightnes_toggle">Automatic brightness</label>
-                    <input id="auto_brightnes_toggle" type="checkbox" class="toggle" name="auto_brightnes" onclick="toggle('brightness_slider')">
+                    <label for="auto_brightnes">Automatic brightness</label>
+                    <input id="auto_brightnes" type="checkbox" class="toggle" name="auto_brightnes" onclick="toggle('brightness_slider')">
                 </div>
                 <div class="slider" id="brightness_slider">
                     <label for="brightness">Brightness Level</label>
@@ -350,113 +350,112 @@
             
             <div class="section">
                 <div class="toggler">
-                    <label>Alarm 1</label>
-                    <input type="checkbox" class="toggle" >
+                    <label for="alarm1_on">Alarm 1</label>
+                    <input id="alarm1_on" type="checkbox" class="toggle" name="alarm1_on">
                 </div>
-                <label>Alarm time</label>
-                <input type="time">
+                <label for="alarm1_time">Alarm time</label>
+                <input id="alarm1_time" type="time" name="alarm1_time">
 
                 <div class="week">
                     <div class="day">
-                        <input id="mon1" type="checkbox" checked>
-                        <label for="mon1">M</label>
+                        <input id="alarm1_mon" type="checkbox" name="alarm1_mon" checked>
+                        <label for="alarm1_mon">M</label>
                     </div>
                     <div class="day">
-                        <input id="tue1" type="checkbox" checked>
-                        <label for="tue1">T</label>
+                        <input id="alarm1_tue" type="checkbox" name="alarm1_tue" checked>
+                        <label for="alarm1_tue">T</label>
                     </div>
                     <div class="day">
-                        <input id="wed1" type="checkbox" checked>
-                        <label for="wed1">W</label>
+                        <input id="alarm1_wed" type="checkbox" name="alarm1_wed" checked>
+                        <label for="alarm1_wed">W</label>
                     </div>
                     <div class="day">
-                        <input id="thu1" type="checkbox" checked>
-                        <label for="thu1">T</label>
+                        <input id="alarm1_thu" type="checkbox" name="alarm1_thu" checked>
+                        <label for="alarm1_thu">T</label>
                     </div>
                     <div class="day">
-                        <input id="fri1" type="checkbox" checked>
-                        <label for="fri1">F</label>
+                        <input id="alarm1_fri" type="checkbox" name="alarm1_fri" checked>
+                        <label for="alarm1_fri">F</label>
                     </div>
                     <div class="day">
-                        <input id="sat1" type="checkbox" checked>
-                        <label for="sat1">S</label>
+                        <input id="alarm1_sat" type="checkbox" name="alarm1_sat" checked>
+                        <label for="alarm1_sat">S</label>
                     </div>
                     <div class="day">
-                        <input id="sun1" type="checkbox" checked>
-                        <label for="sun1">S</label>
+                        <input id="alarm1_sun" type="checkbox" name="alarm1_sun" checked>
+                        <label for="alarm1_sun">S</label>
                     </div>
                 </div>
             </div>
             
             <div class="section">
                 <div class="toggler">
-                    <label>Alarm 2</label>
-                    <input type="checkbox" class="toggle" >
+                    <label for="alarm2_on">Alarm 2</label>
+                    <input id="alarm2_on" type="checkbox" class="toggle" name="alarm2_on">
                 </div>
-                <label>Alarm time</label>
-                <input type="time">
+                <label for="alarm2_time">Alarm time</label>
+                <input id="alarm2_time" type="time" name="alarm2_time">
 
                 <div class="week">
                     <div class="day">
-                        <input id="mon2" type="checkbox" checked>
-                        <label for="mon2">M</label>
+                        <input id="alarm2_mon" type="checkbox" name="alarm2_mon" checked>
+                        <label for="alarm2_mon">M</label>
                     </div>
                     <div class="day">
-                        <input id="tue2" type="checkbox" checked>
-                        <label for="tue2">T</label>
+                        <input id="alarm2_tue" type="checkbox" name="alarm2_tue" checked>
+                        <label for="alarm2_tue">T</label>
                     </div>
                     <div class="day">
-                        <input id="wed2" type="checkbox" checked>
-                        <label for="wed2">W</label>
+                        <input id="alarm2_wed" type="checkbox" name="alarm2_wed" checked>
+                        <label for="alarm2_wed">W</label>
                     </div>
                     <div class="day">
-                        <input id="thu2" type="checkbox" checked>
-                        <label for="thu2">T</label>
+                        <input id="alarm2_thu" type="checkbox" name="alarm2_thu" checked>
+                        <label for="alarm2_thu">T</label>
                     </div>
                     <div class="day">
-                        <input id="fri2" type="checkbox" checked>
-                        <label for="fri2">F</label>
+                        <input id="alarm2_fri" type="checkbox" name="alarm2_fri" checked>
+                        <label for="alarm2_fri">F</label>
                     </div>
                     <div class="day">
-                        <input id="sat2" type="checkbox" checked>
-                        <label for="sat2">S</label>
+                        <input id="alarm2_sat" type="checkbox" name="alarm2_sat" checked>
+                        <label for="alarm2_sat">S</label>
                     </div>
                     <div class="day">
-                        <input id="sun2" type="checkbox" checked>
-                        <label for="sun2">S</label>
+                        <input id="alarm2_sun" type="checkbox" name="alarm2_sun" checked>
+                        <label for="alarm2_sun">S</label>
                     </div>
                 </div>
             </div>
 
             <div class="section">
-                <label>Radio station</label>
-                <input type="url" placeholder="Enter radio station url">
-                <label>Radio timeout</label>
-                <input type="number" min="1" placeholder="Enter positive value in minutes">
+                <label for="radio_station">Radio station</label>
+                <input id="radio_station" type="url" placeholder="Enter radio station url" name="radio_station">
+                <label for="radio_timeout">Radio timeout</label>
+                <input id="radio_timeout" type="number" min="1" placeholder="Enter positive value in minutes" name="radio_timeout">
             </div>
-                
                 
             <div class="section">
                 <div class="toggler">
-                    <label>MQTT support</label>
-                    <input type="checkbox" class="toggle">
+                    <label for="mqtt_on">MQTT support</label>
+                    <input id="mqtt_on" type="checkbox" class="toggle" name="mqtt_on">
                 </div>
-                <label>Server</label>
-                <input type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$">
-                <label>Port</label>
-                <input type="number" placeholder="Enter MQTT server port">
-                <label>username</label>
-                <input type="text" placeholder="Enter MQTT username">
-                <label>password</label>
-                <input type="password" placeholder="Enter MQTT password">
-                <label>topic</label>
-                <input type="text" placeholder="Enter MQTT topic for communication">
+                <label for="mqtt_server">Server</label>
+                <input id="mqtt_server" type="text" minlength="7" maxlength="15" size="15" placeholder="Enter MQTT server IP" pattern="^(?>(\d|[1-9]\d{2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(?1)$" name="mqtt_server">
+                <label for="mqtt_port">Port</label>
+                <input id="mqtt_port" type="number" placeholder="Enter MQTT server port" name="mqtt_port">
+                <label for="mqtt_user">username</label>
+                <input id="mqtt_user" type="text" placeholder="Enter MQTT username" name="mqtt_user">
+                <label for="mqtt_pass">password</label>
+                <input id="mqtt_pass" type="password" placeholder="Enter MQTT password" name="mqtt_pass">
+                <label for="mqtt_topic">topic</label>
+                <input id="mqtt_topic" type="text" placeholder="Enter MQTT topic for communication" name="mqtt_topic">
+            </div>
+        
+            <div class="button">
+                <input type="submit" value="Save" />    
             </div>
         </form>
-
-        <div class="button">
-            <input type="submit" value="Save" />    
-        </div>
         </div>
     </body>
 </html>
