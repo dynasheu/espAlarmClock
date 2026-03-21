@@ -189,10 +189,10 @@ void setDisplay(unsigned int currentTime) {
     byte num = currentTime/divisor % 10;
 
     // no leading 0 for hours
-    bool check = ( i != 3 ) || ( i == 3 && currentTime > 999 );
-    if ( check ) {
+    // bool check = ( i != 3 ) || ( i == 3 && currentTime > 999 );
+    // if ( check ) {
       lc.setDigit(0,i%4,num,false);
-    }
+    // }
   }
 }
 
@@ -453,7 +453,7 @@ void loop() {
       luxValue = mySensor.getLux();
       Serial.print("lux value ");
       Serial.println(luxValue);
-      if (luxValue > 100) {
+      if (luxValue > 50) {
         lc.setIntensity(15);
       }
       else {
